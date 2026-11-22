@@ -3,9 +3,9 @@
 <head>
     <!-- Konfigurasi Khusus iOS / iPhone PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Finance Tracker">
-    <meta name="theme-color" content="#3d312a">
+    <meta name="theme-color" content="#fbf9f6">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Finance Tracker</title>
@@ -21,13 +21,30 @@
         html, body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-style: normal !important;
-            background-color: #f3ede6;
+            background-color: #fbf9f6;
             color: #3d312a;
             overscroll-behavior: none;
+            margin: 0;
+            padding: 0;
         }
         * {
             font-style: normal;
             -webkit-tap-highlight-color: transparent;
+        }
+        .status-bar-fill {
+            height: env(safe-area-inset-top, 44px);
+            min-height: 44px;
+            background-color: #fbf9f6;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        @media (min-width: 640px) {
+            body {
+                background-color: #f3ede6;
+            }
+            .status-bar-fill {
+                display: none;
+            }
         }
         .tabular-nums {
             font-variant-numeric: tabular-nums;
@@ -54,9 +71,8 @@
             transition: transform 0.14s ease, color 0.18s ease, background-color 0.18s ease;
         }
         .nav-item:active {
-            transform: scale(0.93);
+            transform: scale(0.94);
         }
-        /* Kustomisasi Scrollbar agar tipis dan estetik ala HP */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -69,37 +85,40 @@
         }
     </style>
 </head>
-<body class="bg-[#f3ede6] flex items-center justify-center min-h-screen overflow-hidden">
+<body class="flex items-center justify-center min-h-screen overflow-hidden">
 
     <!-- Mockup HP Container -->
     <div class="w-full max-w-md h-[100dvh] sm:h-[844px] bg-[#fbf9f6] shadow-2xl relative flex flex-col justify-between overflow-hidden sm:border-4 sm:border-[#3d312a] sm:rounded-[40px]">
         
+        <!-- Area Atas Menyatu Krem (Khusus Layar HP) -->
+        <div class="status-bar-fill"></div>
+
         <!-- Area Konten Utama -->
-        <div class="flex-1 overflow-y-auto scroll-area pb-32 page-transition">
+        <div class="flex-1 overflow-y-auto scroll-area pb-28 page-transition">
             {% block content %}{% endblock %}
         </div>
 
-        <!-- Navigasi Bawah (Fixed menempel di bawah layar HP) -->
-        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-[#ede4da] px-3 pt-2.5 pb-6 flex justify-between items-end z-50 shadow-lg">
-            <a href="{{ url_for('index') }}" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'index' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-xs mt-1 leading-none">Beranda</span>
+        <!-- Navigasi Bawah Lebih Tinggi & Tombol Lebih Besar -->
+        <div class="absolute bottom-0 left-0 right-0 h-24 bg-white/95 backdrop-blur-md border-t border-[#ede4da] px-3 pt-2 pb-4 flex justify-between items-center z-50 shadow-lg">
+            <a href="{{ url_for('index') }}" class="nav-item flex-1 h-full flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'index' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
+                <i class="fa-solid fa-house text-xl"></i>
+                <span class="text-[13px] mt-1.5 leading-none">Beranda</span>
             </a>
-            <a href="{{ url_for('budget') }}" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'budget' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
-                <i class="fa-solid fa-chart-pie text-lg"></i>
-                <span class="text-xs mt-1 leading-none">Statistik</span>
+            <a href="{{ url_for('budget') }}" class="nav-item flex-1 h-full flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'budget' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
+                <i class="fa-solid fa-chart-pie text-xl"></i>
+                <span class="text-[13px] mt-1.5 leading-none">Statistik</span>
             </a>
-            <!-- Tombol Plus Tengah -->
-            <a href="{{ url_for('tambah') }}" class="nav-item shrink-0 mx-1.5 w-14 h-14 bg-[#3d312a] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#2c221d] -mt-5 border-4 border-[#fbf9f6]">
-                <i class="fa-solid fa-plus text-xl"></i>
+            <!-- Tombol Plus Tengah Lebih Besar -->
+            <a href="{{ url_for('tambah') }}" class="nav-item shrink-0 mx-2 w-16 h-16 bg-[#3d312a] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#2c221d] -mt-6 border-4 border-[#fbf9f6]">
+                <i class="fa-solid fa-plus text-2xl"></i>
             </a>
-            <a href="{{ url_for('tabungan') }}" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'tabungan' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
-                <i class="fa-solid fa-piggy-bank text-lg"></i>
-                <span class="text-xs mt-1 leading-none">Tabungan</span>
+            <a href="{{ url_for('tabungan') }}" class="nav-item flex-1 h-full flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'tabungan' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
+                <i class="fa-solid fa-piggy-bank text-xl"></i>
+                <span class="text-[13px] mt-1.5 leading-none">Tabungan</span>
             </a>
-            <a href="{{ url_for('riwayat') }}" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'riwayat' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
-                <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-                <span class="text-xs mt-1 leading-none">Riwayat</span>
+            <a href="{{ url_for('riwayat') }}" class="nav-item flex-1 h-full flex flex-col items-center justify-center py-2 px-1 rounded-2xl {% if request.endpoint == 'riwayat' %}text-[#3d312a] bg-[#f6f1eb] font-bold{% else %}text-[#8c7e74] font-semibold{% endif %}">
+                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+                <span class="text-[13px] mt-1.5 leading-none">Riwayat</span>
             </a>
         </div>
     </div>
