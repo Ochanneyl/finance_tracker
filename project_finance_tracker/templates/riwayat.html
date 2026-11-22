@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <p class="text-sm text-gray-500">Arsip Keuangan</p>
+            <h1 class="text-xl font-bold text-[#3d312a]">Riwayat Transaksi 📝</h1>
+        </div>
+    </div>
+
+    <!-- Kotak Pencarian & Filter -->
+    <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm mb-5">
+        <form action="{{ url_for('riwayat') }}" method="GET" class="space-y-3">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-400 text-xs"></i>
+                <input type="text" name="q" value="{{ q }}" placeholder="Cari catatan atau kategori..." class="w-full bg-gray-50 border border-gray-200 pl-9 pr-3 py-3 rounded-2xl text-xs font-semibold text-[#3d312a] focus:outline-none">
+            </div>
+            <div class="flex space-x-2">
+                <select name="kategori" class="flex-1 bg-gray-50 border border-gray-200 p-2.5 rounded-xl text-xs font-semibold text-[#3d312a] focus:outline-none">
+                    <option value="">Semua Kategori</option>
+                    <option value="Makanan" {% if kategori == 'Makanan' %}selected{% endif %}>Makanan</option>
+                    <option value="Transportasi" {% if kategori == 'Transportasi' %}selected{% endif %}>Transportasi</option>
+                    <option value="Belanja" {% if kategori == 'Belanja' %}selected{% endif %}>Belanja</option>
+                    <option value="Pendidikan" {% if kategori == 'Pendidikan' %}selected{% endif %}>Pendidikan</option>
+                    <option value="Hiburan" {% if kategori == 'Hiburan' %}selected{% endif %}>Hiburan</option>
+                    <option value="Kesehatan" {% if kategori == 'Kesehatan' %}selected{% endif %}>Kesehatan</option>
+                    <option value="Lainnya" {% if kategori == 'Lainnya' %}selected{% endif %}>Lainnya</option>
+                </select>
+                <button type="submit" class="bg-[#3d312a] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Daftar Riwayat -->
+    <div class="space-y-3">
+        {% if transaksi %}
+            {% for t in transaksi %}
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between gap-3">
+                <div class="flex items-center space-x-3 min-w-0">
+                    <div class="w-10 h-10 shrink-0 rounded-2xl {% if t.jenis == 'pemasukan' %}bg-emerald-50 text-emerald-600{% else %}bg-amber-50 text-amber-800{% endif %} flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="font-bold text-xs text-[#3d312a] truncate">{{ t.catatan if t.catatan else t.kategori }}</h4>
+                        <p class="text-[10px] text-gray-400 mt-0.5">{{ t.kategori }} • {{ t.tanggal }}</p>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <span class="block font-extrabold text-xs {% if t.jenis == 'pemasukan' %}text-emerald-600{% else %}text-rose-600{% endif %}">
+                        {% if t.jenis == 'pemasukan' %}+{% else %}-{% endif %}Rp {{ t.jumlah | rupiah }}
+                    </span>
+                    <div class="flex items-center justify-end space-x-2 mt-1">
+                        <a href="{{ url_for('edit_transaksi', id=t.id) }}" class="text-[10px] font-bold text-amber-700 hover:underline">
+                            Edit
+                        </a>
+                        <form action="{{ url_for('hapus_transaksi', id=t.id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus transaksi ini?');" class="inline">
+                            <button type="submit" class="text-[10px] font-bold text-rose-600 hover:underline">
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-12 bg-white rounded-3xl border border-gray-100">
+                <p class="text-xs text-gray-400">Tidak ada riwayat transaksi yang ditemukan.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
