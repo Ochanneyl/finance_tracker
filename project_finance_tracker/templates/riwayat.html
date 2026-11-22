@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-5">
         <div>
-            <p class="text-xs font-medium text-[#8c7e74]">Arsip Keuangan</p>
+            <p class="text-sm font-medium text-[#8c7e74]">Arsip Keuangan</p>
             <h1 class="text-2xl font-extrabold text-[#3d312a] tracking-tight mt-0.5">Riwayat Transaksi 📝</h1>
         </div>
     </div>
@@ -13,11 +13,11 @@
     <div class="bg-white p-4 rounded-3xl border border-[#ede4da] shadow-sm mb-5">
         <form action="{{ url_for('riwayat') }}" method="GET" class="space-y-3">
             <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9c8d82] text-sm"></i>
-                <input type="text" name="q" value="{{ q }}" placeholder="Cari catatan atau kategori..." class="w-full h-11 bg-[#faf7f4] border border-[#e6dcd0] pl-10 pr-3.5 rounded-2xl text-sm font-medium text-[#3d312a] placeholder:text-[#a39489] focus:outline-none focus:border-[#3d312a] focus:bg-white transition-colors">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-[#9c8d82] text-sm"></i>
+                <input type="text" name="q" value="{{ q }}" placeholder="Cari catatan atau kategori..." class="w-full h-12 bg-[#faf7f4] border border-[#e6dcd0] pl-11 pr-4 rounded-2xl text-[15px] font-medium text-[#3d312a] placeholder:text-[#a39489] focus:outline-none focus:border-[#3d312a] focus:bg-white transition-colors">
             </div>
             <div class="flex items-center gap-2.5">
-                <select name="kategori" class="flex-1 h-11 bg-[#faf7f4] border border-[#e6dcd0] px-3.5 rounded-xl text-sm font-semibold text-[#3d312a] focus:outline-none focus:border-[#3d312a] focus:bg-white transition-colors">
+                <select name="kategori" class="flex-1 h-12 bg-[#faf7f4] border border-[#e6dcd0] px-3.5 rounded-xl text-[15px] font-semibold text-[#3d312a] focus:outline-none focus:border-[#3d312a] focus:bg-white transition-colors">
                     <option value="">Semua Kategori</option>
                     <option value="Makanan" {% if kategori == 'Makanan' %}selected{% endif %}>Makanan</option>
                     <option value="Transportasi" {% if kategori == 'Transportasi' %}selected{% endif %}>Transportasi</option>
@@ -27,7 +27,7 @@
                     <option value="Kesehatan" {% if kategori == 'Kesehatan' %}selected{% endif %}>Kesehatan</option>
                     <option value="Lainnya" {% if kategori == 'Lainnya' %}selected{% endif %}>Lainnya</option>
                 </select>
-                <button type="submit" class="h-11 shrink-0 bg-[#3d312a] hover:bg-[#2c221d] active:scale-[0.97] text-white px-5 rounded-xl text-sm font-bold shadow-sm transition-all">
+                <button type="submit" class="h-12 shrink-0 bg-[#3d312a] hover:bg-[#2c221d] active:scale-[0.97] text-white px-5 rounded-xl text-[15px] font-bold shadow-sm transition-all">
                     Filter
                 </button>
             </div>
@@ -35,29 +35,29 @@
     </div>
 
     <!-- Daftar Riwayat -->
-    <div class="space-y-3">
+    <div class="space-y-3.5">
         {% if transaksi %}
             {% for t in transaksi %}
             <div class="bg-white p-4 rounded-2xl border border-[#ede4da] shadow-sm flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-11 h-11 shrink-0 rounded-2xl {% if t.jenis == 'pemasukan' %}bg-emerald-50 text-emerald-600{% else %}bg-amber-50 text-amber-800{% endif %} flex items-center justify-center text-base">
+                <div class="flex items-center gap-3.5 min-w-0">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl {% if t.jenis == 'pemasukan' %}bg-emerald-50 text-emerald-600{% else %}bg-amber-50 text-amber-800{% endif %} flex items-center justify-center text-lg">
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                     <div class="min-w-0">
-                        <h4 class="font-bold text-sm text-[#3d312a] truncate">{{ t.catatan if t.catatan else t.kategori }}</h4>
-                        <p class="text-xs text-[#8c7e74] mt-0.5 truncate">{{ t.kategori }} • {{ t.tanggal }}</p>
+                        <h4 class="font-bold text-[15px] text-[#3d312a] truncate">{{ t.catatan if t.catatan else t.kategori }}</h4>
+                        <p class="text-xs font-medium text-[#8c7e74] mt-0.5 truncate">{{ t.kategori }} • {{ t.tanggal }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col items-end shrink-0">
-                    <span class="block font-extrabold text-sm tabular-nums {% if t.jenis == 'pemasukan' %}text-emerald-600{% else %}text-rose-600{% endif %}">
+                    <span class="block font-extrabold text-[15px] tabular-nums {% if t.jenis == 'pemasukan' %}text-emerald-600{% else %}text-rose-600{% endif %}">
                         {% if t.jenis == 'pemasukan' %}+{% else %}-{% endif %}Rp {{ t.jumlah | rupiah }}
                     </span>
                     <div class="flex items-center justify-end gap-2 mt-2">
-                        <a href="{{ url_for('edit_transaksi', id=t.id) }}" class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 active:scale-95 text-xs font-bold text-amber-800 border border-amber-200/70 transition-all">
+                        <a href="{{ url_for('edit_transaksi', id=t.id) }}" class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 active:scale-95 text-[13px] font-bold text-amber-800 border border-amber-200/70 transition-all">
                             Edit
                         </a>
                         <form action="{{ url_for('hapus_transaksi', id=t.id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus transaksi ini?');" class="inline-flex">
-                            <button type="submit" class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 active:scale-95 text-xs font-bold text-rose-600 border border-rose-200/70 transition-all">
+                            <button type="submit" class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 active:scale-95 text-[13px] font-bold text-rose-600 border border-rose-200/70 transition-all">
                                 Hapus
                             </button>
                         </form>
